@@ -1,0 +1,7 @@
+.board {
+    display: inline-grid;
+    grid-template-columns: 64px 64px 64px;
+    grid-template-rows: 64px 64px 64px;
+    column-gap: 0px;
+    row-gap: 0px;
+}

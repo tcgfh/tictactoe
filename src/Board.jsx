@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import './Board.css';
+import { CurrentGameContext } from './CurrentGameContext';
 import Square from './Square';
-const initalState = ["","","","","","","","",""];
 
 const detectWinner = function(state){
     const valueAt = function(index) {
@@ -37,23 +37,34 @@ const detectWinner = function(state){
       };
 }
 function Board (props) {
-    const [state, setState] = useState(initalState);
-    const [turn, setTurn] = useState("X");
+  const {
+    dispatch,
+    actionTypes,
+    currentGame
+  } = useContext(CurrentGameContext);
 
+    const {
+      currTurn,
+      field
+    } = currentGame;
     const {
       winner,
       winningIndices,
       isTie,
-    } = detectWinner(state);
+    } = detectWinner(field);
 
     const handleClickSquare = function(key){
       if (winner) return;
-      if (!state[key]) {
-          const updatedState = [...state];
-          updatedState[key] = turn;
-          setState(updatedState);
-
-          setTurn(turn === "X" ? "Y" : "X");
+      if (!field[key]) {
+        const updatedField = [...field];
+        updatedField[key] = currTurn;
+        dispatch({
+          type: actionTypes.update,
+          game: {
+            field: updatedField,
+            currTurn: currTurn === "X" ? "Y" : "X",
+          }
+        });
       }
     }
 
@@ -61,7 +72,7 @@ function Board (props) {
       <React.Fragment>
         <div className="board">
           {
-            state.map((value, index)=><Square key={index} onClick={()=>handleClickSquare(index)} value={value}/>)
+            field.map((value, index)=><Square key={index} onClick={()=>handleClickSquare(index)} value={value}/>)
           }
         </div>
         { winner && <div className="winBanner">Winner is {winner}!</div>}

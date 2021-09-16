@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Board from './Board';
+import Arena from './Arena';
 
 /**
 * Entry point of the app
@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <h1>Tic Tac Toe</h1>
-      <Board></Board>
+      <Arena />
 
     </div>
   );

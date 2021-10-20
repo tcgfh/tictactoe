@@ -4,6 +4,7 @@ import Board from "./Board";
 import { CurrentGameContext } from "./CurrentGameContext";
 
 import {TOKEN} from "./Constants";
+import GameScoreboard from "./GameScoreboard";
 
 const ROOT_ACTION_TYPES = {
     updateCurrentGame: "updateCurrentGame",
@@ -92,6 +93,7 @@ function Arena(props) {
         <div className="arena">
             <CurrentGameContext.Provider value={currentGameContext}>
                 <Board/>
+                <GameScoreboard/>
             </CurrentGameContext.Provider>
         </div>
     )

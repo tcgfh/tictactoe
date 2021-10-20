@@ -11,6 +11,7 @@ const ROOT_ACTION_TYPES = {
     resetGame: "resetGame",
     addGame: "addGame",
     setCurrentGame: "setCurrentGame",
+    loadOverallState: "loadOverallState",
 };
 
 function game(state, action = {}) {
@@ -68,6 +69,9 @@ function gamesById(state, action = {}) {
 
 function rootReducer(state, action = {}) {
     switch(action.type) {
+        case ROOT_ACTION_TYPES.loadOverallState: {
+            return action.state;
+        }
         case ROOT_ACTION_TYPES.setCurrentGame: {
             const {
                 gameId,
@@ -151,9 +155,17 @@ function useMiniRedux() {
         },
         dispatch: dispatchToRoot,
     }), [rootState]);
+    const overallState = useMemo(()=>({
+        state: rootState,
+        actionTypes: {
+            loadOverallState: ROOT_ACTION_TYPES.loadOverallState
+        },
+        dispatch: dispatchToRoot,
+    }), [rootState]);
     return {
         currentGameState,
         matchState,
+        overallState,
     };
 }
 

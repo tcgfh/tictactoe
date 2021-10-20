@@ -14,6 +14,7 @@ const ROOT_ACTION_TYPES = {
     resetCurrentGame: "resetCurrentGame",
     resetGame: "resetGame",
     addGame: "addGame",
+    setCurrentGame: "setCurrentGame",
 };
 
 function game(state, action = {}) {
@@ -71,6 +72,16 @@ function gamesById(state, action = {}) {
 
 function rootReducer(state, action = {}) {
     switch(action.type) {
+        case ROOT_ACTION_TYPES.setCurrentGame: {
+            const {
+                gameId,
+            } = action;
+
+            if (!state.gamesById[gameId]) return; // prevent setting to non-existent game id
+            const updatedRoot = {...state};
+            updatedRoot.currGameId = gameId;
+            return updatedRoot;
+        }
         case ROOT_ACTION_TYPES.updateCurrentGame: {
             const updatedGames = gamesById(state.gamesById, {
                 type: ROOT_ACTION_TYPES.updateGame,
@@ -140,6 +151,7 @@ function miniRedux() {
         gameIds: selectGameIds(rootState),
         actionTypes: {
             addGame: ROOT_ACTION_TYPES.addGame,
+            setCurrentGame: ROOT_ACTION_TYPES.setCurrentGame,
         },
         dispatch: dispatchToRoot,
     }), [rootState]);

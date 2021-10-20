@@ -7,6 +7,13 @@
 .matchScoreboard__game--currentGame {
     background-color: khaki;
 }
+
+.matchScoreboard__game.matchScoreboard__game--currentGame:hover {
+    background-color: khaki;
+}
+.matchScoreboard__game:hover {
+    background-color:rgb(247, 244, 224);
+}
 .matchScoreboard_header {
     display: flex;
     justify-content: space-between;

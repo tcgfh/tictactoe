@@ -1,6 +1,36 @@
 import React, { useContext, useCallback } from "react";
+import PropTypes from "prop-types";
 import { MatchContext } from "./MatchContext";
 import "./MatchScoreboard.css";
+
+function MatchScoreboardGame({id, isCurrentGame}) {
+    const {
+        dispatch,
+        actionTypes,
+    } = useContext(MatchContext);
+
+    const handleClick = useCallback(()=>dispatch({
+        type: actionTypes.setCurrentGame,
+        gameId: id,
+
+    }), [id]);
+    const classNames = ["matchScoreboard__game"];
+    if (isCurrentGame) classNames.push("matchScoreboard__game--currentGame");
+    return (
+        <div key={id} className={classNames.join(" ")} onClick={handleClick}>
+            Game Id: {id}
+        </div>
+    );
+}
+MatchScoreboardGame.propTypes = {
+    id: PropTypes.string,
+    isCurrentGame: PropTypes.bool,
+};
+
+MatchScoreboardGame.defaultProps = {
+    id: "",
+    isCurrentGame: false,
+}
 
 function MatchScoreboard() {
     const {
@@ -18,15 +48,7 @@ function MatchScoreboard() {
         </div>
         <div className="matchScoreboard_gamelist">
             {
-                gameIds.map(id=>{
-                    const classNames = ["matchScoreboard__game"];
-                    if (id === currentGameId) classNames.push("matchScoreboard__game--currentGame");
-                    return (
-                        <div key={id} className={classNames.join(" ")}>
-                            Game Id: {id}
-                        </div>
-                    );
-                })
+                gameIds.map(id=>(<MatchScoreboardGame key={id} id={id} isCurrentGame={id === currentGameId}/>))
             }
         </div>
     </div>);

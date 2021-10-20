@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { CurrentGameContext } from "./CurrentGameContext";
 import { detectWinner } from "./GameLogic";
 import "./GameScoreboard.css";
@@ -7,8 +7,12 @@ import "./GameScoreboard.css";
 
 function GameScoreboard(props) {
     const {
-        currentGame
+        currentGame,
+        actionTypes,
+        dispatch,
     } = useContext(CurrentGameContext);
+
+    const resetGame = useCallback(()=>dispatch(actionTypes.resetGame));
 
     const {
         currTurn,
@@ -25,6 +29,7 @@ function GameScoreboard(props) {
             { !winner && currTurn && <h1>{`${currTurn}'s Turn`}</h1>}
             { winner && <h1 className="winBanner">Winner is {winner}!</h1>}
             { isTie && <h1>It is a Tie!</h1>}
+            <button onClick={resetGame}>Reset Current Game</button>
         </div>
     )
 }

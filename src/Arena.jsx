@@ -9,6 +9,8 @@ import GameScoreboard from "./GameScoreboard";
 const ROOT_ACTION_TYPES = {
     updateCurrentGame: "updateCurrentGame",
     updateGame: "updateGame",
+    resetCurrentGame: "resetCurrentGame",
+    resetGame: "resetGame",
 };
 
 function game(state, action = {}) {
@@ -27,6 +29,19 @@ function game(state, action = {}) {
 
 function gamesById(state, action = {}) {
     switch(action.type) {
+        case ROOT_ACTION_TYPES.resetGame: {
+            const {
+                gameId,
+            } = action;
+
+            // don't provide a state and action
+            // to the game reducer; this would result
+            // in a new game
+            const updatedGame = game();
+            const updatedGames = [...state];
+            updatedGames[gameId] = updatedGame;
+            return updatedGames;
+        }
         case ROOT_ACTION_TYPES.updateGame: {
             const {
                 gameId,
@@ -59,6 +74,16 @@ function rootReducer(state, action = {}) {
             updatedRoot.gamesById = updatedGames;
             return updatedRoot;
         }
+        case ROOT_ACTION_TYPES.resetCurrentGame: {
+            const updatedGames = gameById(state.gamesById, {
+                type: ROOT_ACTION_TYPES.resetGame,
+                gameId: state.currGameId,
+            });
+            if (updatedGames === state.gameById) return state;
+            const updatedRoot = {...state};
+            updatedRoot.gameById = updatedGames;
+            return updatedRoot;
+        }
         default: {
             return {
                 currGameId: 0,
@@ -78,6 +103,7 @@ function miniRedux() {
         currentGame: selectCurrentGame(rootState),
         actionTypes: {
             update: ROOT_ACTION_TYPES.updateCurrentGame,
+            reset: ROOT_ACTION_TYPES.resetCurrentGame,
         },
         dispatch: dispatchToRoot,
     }), [rootState]);

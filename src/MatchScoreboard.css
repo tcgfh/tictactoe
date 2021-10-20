@@ -1,0 +1,19 @@
+.matchScoreboard {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.matchScoreboard__game--currentGame {
+    background-color: khaki;
+}
+.matchScoreboard_header {
+    display: flex;
+    justify-content: space-between;
+}
+.matchScoreboard_title {
+    font-weight: bold;
+}
+.matchScoreboard_gamelist {
+    overflow-y: auto;
+}

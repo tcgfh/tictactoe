@@ -1,5 +1,6 @@
 .arena {
     display: grid;
-    grid-template-columns: auto 200px;
+    grid-template-columns: auto 200px 200px;
+    grid-template-rows: 192px;
     justify-content: center;
 }

@@ -2,15 +2,18 @@ import React, { useMemo, useReducer, } from "react";
 import "./Arena.css"
 import Board from "./Board";
 import { CurrentGameContext } from "./CurrentGameContext";
+import { MatchContext } from "./MatchContext";
 
 import {TOKEN} from "./Constants";
 import GameScoreboard from "./GameScoreboard";
+import MatchScoreboard from "./MatchScoreboard";
 
 const ROOT_ACTION_TYPES = {
     updateCurrentGame: "updateCurrentGame",
     updateGame: "updateGame",
     resetCurrentGame: "resetCurrentGame",
     resetGame: "resetGame",
+    addGame: "addGame",
 };
 
 function game(state, action = {}) {
@@ -29,6 +32,11 @@ function game(state, action = {}) {
 
 function gamesById(state, action = {}) {
     switch(action.type) {
+        case ROOT_ACTION_TYPES.addGame: {
+            const updatedGames = [...state];
+            updatedGames.push(game());
+            return updatedGames;
+        }
         case ROOT_ACTION_TYPES.resetGame: {
             const {
                 gameId,
@@ -75,19 +83,30 @@ function rootReducer(state, action = {}) {
             return updatedRoot;
         }
         case ROOT_ACTION_TYPES.resetCurrentGame: {
-            const updatedGames = gameById(state.gamesById, {
+            const updatedGames = gamesById(state.gamesById, {
                 type: ROOT_ACTION_TYPES.resetGame,
                 gameId: state.currGameId,
             });
-            if (updatedGames === state.gameById) return state;
+            if (updatedGames === state.gamesById) return state;
             const updatedRoot = {...state};
-            updatedRoot.gameById = updatedGames;
+            updatedRoot.gamesById = updatedGames;
+            return updatedRoot;
+        }
+        case ROOT_ACTION_TYPES.addGame: {
+            // add a game and make it the current one
+            const updatedGames = gamesById(state.gamesById, {
+                type: ROOT_ACTION_TYPES.addGame,
+            });
+            const updatedRoot = {...state};
+            updatedRoot.gamesById = updatedGames;
+            updatedRoot.currGameId = `${updatedGames.length -1}`;
             return updatedRoot;
         }
         default: {
+            const updatedGames = gamesById();
             return {
-                currGameId: 0,
-                gamesById: gamesById(),
+                currGameId: `${updatedGames.length - 1}`,
+                gamesById: updatedGames,
             }
         }
     }
@@ -97,9 +116,17 @@ function selectCurrentGame(state) {
     return state.gamesById[state.currGameId];
 }
 
+function selectCurrentGameId(state) {
+    return state.currGameId;
+}
+
+function selectGameIds(state) {
+    return Object.keys(state.gamesById);
+}
+
 function miniRedux() {
     const [rootState, dispatchToRoot] = useReducer(rootReducer, {}, rootReducer);
-    const currentGameContext = useMemo(()=>({
+    const currentGameState = useMemo(()=>({
         currentGame: selectCurrentGame(rootState),
         actionTypes: {
             update: ROOT_ACTION_TYPES.updateCurrentGame,
@@ -108,19 +135,31 @@ function miniRedux() {
         dispatch: dispatchToRoot,
     }), [rootState]);
 
+    const matchState = useMemo(()=>({
+        currentGameId: selectCurrentGameId(rootState),
+        gameIds: selectGameIds(rootState),
+        actionTypes: {
+            addGame: ROOT_ACTION_TYPES.addGame,
+        },
+        dispatch: dispatchToRoot,
+    }), [rootState]);
     return {
-        currentGameContext,
+        currentGameState,
+        matchState,
     };
 }
 
 function Arena(props) {
-    const { currentGameContext } = miniRedux();
+    const { currentGameState, matchState } = miniRedux();
     return (
         <div className="arena">
-            <CurrentGameContext.Provider value={currentGameContext}>
+            <CurrentGameContext.Provider value={currentGameState}>
                 <Board/>
                 <GameScoreboard/>
             </CurrentGameContext.Provider>
+            <MatchContext.Provider value={matchState}>
+                <MatchScoreboard/>
+            </MatchContext.Provider>
         </div>
     )
 }

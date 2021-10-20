@@ -1,9 +1,16 @@
-# Getting Started with Create React App
+# TicTacToe Demo App
+This is a demo application showcasing usage of React to create a game.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Design
+The app consists of three major sections, each their own component: 1) The board where the current TicTacToe game is played, 2) The game scoreboard, which displays information about the current game, and 3) The match scoreboard, which displays information about the set of games. It also allows you to switch between games, and to create new games.
+
+The state of the app is managed in a redux-like hook, called UseMiniRedux. It provides two contexts: one for the current game, and another context for information about the Match, which is set of games. The contexts provide the selected state as well as action types and dispatch function for affecting the state.
+
+The Arena component is responsible for providing the relevant context values to the major sections. The board and the game scoreboard both use the current game context. The match scoreboard uses the current game context.
+
 
 ## Available Scripts
-
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 In the project directory, you can run:
 
 ### `npm start`

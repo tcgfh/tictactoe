@@ -28,6 +28,7 @@ function Board (props) {
   } = currentGame;
   const {
     winner,
+    winningIndices,
   } = detectWinner(field);
 
   const handleClickSquare = function(key){
@@ -45,14 +46,24 @@ function Board (props) {
     }
   }
 
+  let squares;
+  // we will use the index as the square key in this case
+  // because we know for sure in the board there are and
+  // always will be 9 squares. Otheriwise we should find
+  // a better key.
+  if (winner) {
+    squares = [];
+    const winningIndicesMap = {};
+    winningIndices.forEach(_=>winningIndicesMap[_] = true);
+    squares = field.map((value, index)=><Square key={index} isWinning={winningIndicesMap[index]} isClickable={false} value={value}/>);
+  } else{
+    squares = field.map((value, index)=><Square key={index} isWinning={false} isClickable={!value} onClick={()=>handleClickSquare(index)} value={value}/>);
+  }
+
   return (
-    <React.Fragment>
       <div className="board">
-        {
-          field.map((value, index)=><Square key={index} onClick={()=>handleClickSquare(index)} value={value}/>)
-        }
+        { squares }
       </div>
-    </React.Fragment>
   );
 }
 

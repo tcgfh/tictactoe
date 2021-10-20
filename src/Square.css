@@ -6,6 +6,10 @@
     line-height: 40px;
 }
 
-.square:hover {
+.square.square--winning {
+    background-color: rgb(45, 194, 45);
+}
+
+.square.square--clickable:hover {
     background-color: skyblue;
 }

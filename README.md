@@ -8,6 +8,8 @@ The state of the app is managed in a redux-like hook, called UseMiniRedux. It pr
 
 The Arena component is responsible for providing the relevant context values to the major sections. The board and the game scoreboard both use the current game context. The match scoreboard uses the current game context.
 
+There are also two buttons, one for saving the overall app state as a json file, and one for loading the app state from a user selected json file.
+
 
 ## Available Scripts
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

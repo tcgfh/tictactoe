@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useCallback, useContext} from 'react';
 import './Board.css';
 import { CurrentGameContext } from './CurrentGameContext';
 import Square from './Square';
@@ -31,7 +31,7 @@ function Board (props) {
     winningIndices,
   } = detectWinner(field);
 
-  const handleClickSquare = function(key){
+  const handleClickSquare = useCallback((key)=>{
     if (winner) return;
     if (!field[key]) {
       const updatedField = [...field];
@@ -44,7 +44,7 @@ function Board (props) {
         }
       });
     }
-  }
+  }, [winner, field, dispatch, actionTypes])
 
   let squares;
   // we will use the index as the square key in this case
@@ -57,11 +57,11 @@ function Board (props) {
     winningIndices.forEach(_=>winningIndicesMap[_] = true);
     squares = field.map((value, index)=><Square key={index} isWinning={winningIndicesMap[index]} isClickable={false} value={value}/>);
   } else{
-    squares = field.map((value, index)=><Square key={index} isWinning={false} isClickable={!value} onClick={()=>handleClickSquare(index)} value={value}/>);
+    squares = field.map((value, index)=><Square key={index} isWinning={false} isClickable={!value} onClick={handleClickSquare} index={index} value={value}/>);
   }
 
   return (
-      <div className="board">
+      <div data-testid="board" className="board">
         { squares }
       </div>
   );

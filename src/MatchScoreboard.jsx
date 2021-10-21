@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import { MatchContext } from "./MatchContext";
 import "./MatchScoreboard.css";
 
-function MatchScoreboardGame({id, isCurrentGame}) {
+export function MatchScoreboardGame({id, isCurrentGame}) {
     const {
         dispatch,
         actionTypes,
     } = useContext(MatchContext);
 
-    const handleClick = useCallback(()=>dispatch({
+    const dispatchCurrentGameChange = useCallback(()=>dispatch({
         type: actionTypes.setCurrentGame,
         gameId: id,
 
@@ -17,7 +17,7 @@ function MatchScoreboardGame({id, isCurrentGame}) {
     const classNames = ["matchScoreboard__game"];
     if (isCurrentGame) classNames.push("matchScoreboard__game--currentGame");
     return (
-        <div key={id} className={classNames.join(" ")} onClick={handleClick}>
+        <div key={id} className={classNames.join(" ")} onClick={dispatchCurrentGameChange}>
             Game Id: {id}
         </div>
     );

@@ -14,7 +14,7 @@ const ROOT_ACTION_TYPES = {
     loadOverallState: "loadOverallState",
 };
 
-function game(state, action = {}) {
+export function game(state, action = {}) {
     switch(action.type) {
         case ROOT_ACTION_TYPES.updateGame: {
             return action.game;

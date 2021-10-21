@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import PropTypes from "prop-types";
 
 import "./Square.css";
@@ -11,8 +11,10 @@ function Square (props) {
     if (props.isClickable) {
         className = "square square--clickable";
     }
+    const handleSquareClick = useCallback(()=> props.onClick(props.index), [props.index, props.onClick]);
+
     return (
-        <div className={className} onClick={props.onClick}>
+        <div className={className} onClick={props.isClickable && handleSquareClick}>
             {props.value}
         </div>
     );
@@ -25,6 +27,7 @@ Square.defaultProps = {
 };
 
 Square.propTypes = {
+    index: PropTypes.number,
     onClick: PropTypes.func,
     value: PropTypes.string,
     isWinning: PropTypes.bool,

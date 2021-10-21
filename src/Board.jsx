@@ -3,6 +3,7 @@ import './Board.css';
 import { CurrentGameContext } from './CurrentGameContext';
 import Square from './Square';
 import { detectWinner } from './GameLogic';
+import { useTelemetryTraceMountUnmount, withTelemetryExecutionTimeProfiler } from './telemetry';
 
 // The playing field for the game tic tac toe
 // When user clicks on squares in the playing field
@@ -16,6 +17,7 @@ import { detectWinner } from './GameLogic';
 
 // The game state comes from
 function Board (props) {
+  useTelemetryTraceMountUnmount("Board", []);
   const {
     dispatch,
     actionTypes,
@@ -36,7 +38,8 @@ function Board (props) {
     if (!field[key]) {
       const updatedField = [...field];
       updatedField[key] = currTurn;
-      dispatch({
+      const profiledDispatch = withTelemetryExecutionTimeProfiler("dispatch from handleClickSquare", dispatch);
+      profiledDispatch({
         type: actionTypes.update,
         game: {
           field: updatedField,

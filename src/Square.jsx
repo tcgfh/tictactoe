@@ -14,7 +14,7 @@ function Square (props) {
     const handleSquareClick = useCallback(()=> props.onClick(props.index), [props.index, props.onClick]);
 
     return (
-        <div className={className} onClick={props.isClickable && handleSquareClick}>
+        <div className={className} onClick={props.isClickable ? handleSquareClick : undefined}>
             {props.value}
         </div>
     );

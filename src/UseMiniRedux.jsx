@@ -3,6 +3,7 @@
 import { useMemo, useReducer, } from "react";
 
 import {TOKEN} from "./Constants";
+import { telemetryActionReduce } from "./telemetry";
 
 const ROOT_ACTION_TYPES = {
     updateCurrentGame: "updateCurrentGame",
@@ -68,6 +69,7 @@ function gamesById(state, action = {}) {
 }
 
 function rootReducer(state, action = {}) {
+    telemetryActionReduce(action, "rootReducer");
     switch(action.type) {
         case ROOT_ACTION_TYPES.loadOverallState: {
             return action.state;

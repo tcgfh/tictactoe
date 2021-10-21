@@ -2,6 +2,7 @@ import React, { useContext, useCallback } from "react";
 import PropTypes from "prop-types";
 import { MatchContext } from "./MatchContext";
 import "./MatchScoreboard.css";
+import {useTelemetryTraceMountUnmount, withTelemetryExecutionTimeProfiler} from "./telemetry"
 
 export function MatchScoreboardGame({id, isCurrentGame}) {
     const {
@@ -39,8 +40,16 @@ function MatchScoreboard() {
         dispatch,
         actionTypes,
     } = useContext(MatchContext);
+    useTelemetryTraceMountUnmount("MatchScoreboard", [currentGameId]);
 
-    const addGame = useCallback(()=>dispatch({type: actionTypes.addGame}));
+    const addGame = useCallback(
+        withTelemetryExecutionTimeProfiler(
+            "dispatch add game",
+            ()=>dispatch({
+                type: actionTypes.addGame
+            })
+        )
+    );
     return(<div className="matchScoreboard">
         <div className="matchScoreboard_header">
             <div className="matchScoreboard_title">Games</div>

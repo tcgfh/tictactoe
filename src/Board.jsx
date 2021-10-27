@@ -2,7 +2,7 @@ import React, {useCallback, useContext} from 'react';
 import './Board.css';
 import { CurrentGameContext } from './CurrentGameContext';
 import Square from './Square';
-import { detectWinner } from './GameLogic';
+import { detectWinnerFromLastMove } from './GameLogic';
 import { useTelemetryTraceMountUnmount, withTelemetryExecutionTimeProfiler } from './telemetry';
 
 // The playing field for the game tic tac toe
@@ -31,7 +31,7 @@ function Board (props) {
   const {
     winner,
     winningIndices,
-  } = detectWinner(field);
+  } = detectWinnerFromLastMove(currentGame);
 
   const handleClickSquare = useCallback((key)=>{
     if (winner) return;
@@ -44,6 +44,7 @@ function Board (props) {
         game: {
           field: updatedField,
           currTurn: currTurn === "X" ? "Y" : "X",
+          indexOfLastMove: key,
         }
       });
     }

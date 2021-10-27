@@ -31,7 +31,7 @@ function Board (props) {
   const {
     winner,
     winningIndices,
-  } = detectWinnerFromLastMove(currentGame);
+  } = withTelemetryExecutionTimeProfiler("detectWinnerFromLastMove from Board", detectWinnerFromLastMove)(currentGame);
 
   const handleClickSquare = useCallback((key)=>{
     if (winner) return;

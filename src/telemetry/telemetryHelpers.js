@@ -4,8 +4,9 @@ import * as telemetryApi from "./telemetryApi.js";
 export function withTelemetryExecutionTimeProfiler(componentName, callback = ()=>{}) {
     return((...props)=>{
         telemetryApi.trace("execution time start", componentName);
-        callback(...props);
+        const result = callback(...props);
         telemetryApi.trace("execution time end", componentName);
+        return result;
     });
 }
 

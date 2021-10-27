@@ -10,6 +10,8 @@ describe("Board Component", function(){
         const mockData = {
             currentGame: {
                 field: ["", "", "", "", "", "", "", "", ""],
+                currTurn: "X",
+                indexOfLastMove: undefined,
             },
         };
 
@@ -30,6 +32,8 @@ describe("Board Component", function(){
         const mockData = {
             currentGame: {
                 field: ["X", "X", "X", "Y", "Y", "", "", "", ""],
+                currTurn: "Y",
+                indexOfLastMove: 0,
             },
         };
 
@@ -68,6 +72,8 @@ describe("Board Component", function(){
         const mockData = {
             currentGame: {
                 field: ["X", "X", "X", "Y", "Y", "", "", "", ""],
+                currTurn: "Y",
+                indexOfLastMove: 2,
             },
         };
 
@@ -101,6 +107,8 @@ describe("Board Component", function(){
         const mockData = {
             currentGame: {
                 field: ["X", "X", "", "Y", "Y", "", "", "", ""],
+                currTurn: "X",
+                indexOfLastMove: "3"
             },
         };
 
@@ -133,6 +141,8 @@ describe("Board Component", function(){
         const mockData = {
             currentGame: {
                 field: ["X", "X", "X", "Y", "Y", "", "", "", ""],
+                currTurn: "Y",
+                indexOfLastMove: 1,
             },
         };
 
@@ -166,7 +176,8 @@ describe("Board Component", function(){
                 },
                 currentGame: {
                     field: ["", "", "", "", "", "", "", "", ""],
-                    currTurn: "X"
+                    currTurn: "X",
+                    indexOfLastMove: undefined,
                 },
             };
 
@@ -191,6 +202,7 @@ describe("Board Component", function(){
                 game: {
                     currTurn: "Y",
                     field: ["X", "", "", "", "", "", "", "", ""],
+                    indexOfLastMove: 0,
                 }
             });
         });
@@ -203,7 +215,8 @@ describe("Board Component", function(){
                 },
                 currentGame: {
                     field: ["X", "X", "X", "Y", "Y", "", "", "", ""],
-                    currTurn: "Y"
+                    currTurn: "Y",
+                    indexOfLastMove:1,
                 },
             };
 

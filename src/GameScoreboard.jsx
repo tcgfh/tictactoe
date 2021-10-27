@@ -2,6 +2,7 @@ import React, { useContext, useCallback } from "react";
 import { CurrentGameContext } from "./CurrentGameContext";
 import { detectWinner } from "./GameLogic";
 import "./GameScoreboard.css";
+import { withTelemetryExecutionTimeProfiler } from "./telemetry";
 // Scoreboard takes the current game context and displays
 // the next turn, and/or the winner
 
@@ -22,7 +23,7 @@ function GameScoreboard(props) {
     const {
         winner,
         isTie,
-    } = detectWinner(field);
+    } = withTelemetryExecutionTimeProfiler("detectWinner from GameScoreboard", detectWinner)(field);
 
     return(
         <div className="gameScoreboard">
